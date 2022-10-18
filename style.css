@@ -1,4 +1,10 @@
-.container {
+.container-button {
+    max-width: 1138px;
+    height: 50px;
+    margin: 0 auto;
+  }
+
+  .container-flex {
     max-width: 1138px;
     margin: 0 auto;
     display: flex;
@@ -10,14 +16,21 @@
       margin: 0 0 20px;
   }
   
-  #usersTable-example table,
+  #usersTable table,
   th,
   td {
-    border: 1px solid black;
-    border-collapse: collapse;
+    border: 1px solid black;   
   }
   
   th,
   td {
     padding: 5px;
+  }
+
+  .button-delete {
+    background-color: red;
+  }
+
+  .add-user {
+    float: right;
   }
