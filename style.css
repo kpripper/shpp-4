@@ -1,36 +1,41 @@
 .container-button {
-    max-width: 1138px;
-    height: 50px;
-    margin: 0 auto;
-  }
+  max-width: 1138px;
+  height: 50px;
+  margin: 0 auto;
+}
 
-  .container-flex {
-    max-width: 1138px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  table {
-      margin: 0 0 20px;
-  }
-  
-  #usersTable table,
-  th,
-  td {
-    border: 1px solid black;   
-  }
-  
-  th,
-  td {
-    padding: 5px;
-  }
+.container-flex {
+  max-width: 1138px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .button-delete {
-    background-color: red;
-  }
+table {
+  margin: 0 0 20px;
+}
 
-  .add-user {
-    float: right;
-  }
+#usersTable table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 5px;
+}
+
+.button-delete {
+  background-color: red;
+}
+
+.add-user {
+  float: right;
+}
+
+input {
+  width:100px;
+}
+

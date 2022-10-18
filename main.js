@@ -1,7 +1,7 @@
 function DataTable(config) {
   console.log(config)
   let configStringified = JSON.stringify(config)
-  console.log(configStringified)
+  console.log('configStringified' + configStringified)
   let configParsed = JSON.parse(configStringified)
   console.log(configParsed)
   fetch(config.apiUrl)
@@ -10,6 +10,9 @@ function DataTable(config) {
     })
     .then((data) => {
       console.log(data)
+      console.log(
+        '(data.data)[0]' + JSON.stringify(Object.entries(data.data)[0])
+      )
 
       // console.log(Object.keys(data))
       // console.log(Object.keys(data.data))
@@ -40,7 +43,9 @@ function DataTable(config) {
       let tableHtml = `<table id="tableId">
       <thead>
         <tr>
-          <th colspan="${Object.keys(config.columns).length + 2}"><button class="add-user" onclick ="addUser()">Add user</button></th>    
+          <th colspan="${
+            Object.keys(config.columns).length + 2
+          }"><button class="add-user" onclick ="addUser()">Add user</button></th>    
         </tr>      
         <tr>
           <th>№</th>
@@ -65,7 +70,9 @@ function DataTable(config) {
         <td>${key['1'].surname}</td>
         <td>${getYearDiff(key['1'].birthday)}</td>
         <td><img src="${key['1'].avatar}"></img></td>
-        <td><button class="button-delete" onclick ="deleteUser(${key['0']}, '${config.apiUrl}')">Delete</button></td>
+        <td><button class="button-delete" onclick ="deleteUser(${key['0']}, '${
+          config.apiUrl
+        }')">Delete</button></td>
         </tr>`
       }
 
@@ -120,8 +127,89 @@ function deleteUser(id, url) {
 }
 
 function addUser() {
-  let table = document.getElementById("tableId");
-  console.log(table)
+  let table = document.getElementById('tableId')
+
+  console.log(document.getElementById('tableId').childNodes[3].firstChild)
+  //  console.log(table.firstChild.innerHTML)
+
+  const row = document.createElement('tr')
+  const td = document.createElement('td')
+  const inp = `<input type="text" id="id" name="id" placeholder="id">`
+  td.innerHTML = inp
+  row.appendChild(td)
+
+  for (let i = 0; i < Object.entries(config1.columns).length; i++) {
+    const td = document.createElement('td')
+    const inp = `<div class="input-container"><input class="input type="text" id="${config1.columns[i].value}" name="${config1.columns[i].value}" placeholder="${config1.columns[i].value}"></div>`
+    td.innerHTML = inp
+    row.appendChild(td)
+  }
+
+  const add = document.createElement('td')
+  const buttonAdd = `<button class="add-button">Add</button>`
+  add.innerHTML = buttonAdd
+  row.appendChild(add)
+
+  document
+    .getElementById('tableId')
+    .childNodes[3].insertBefore(
+      row,
+      document.getElementById('tableId').childNodes[3].firstChild
+    )
+
+  function anon(ev) {
+    console.log('buttonAdd.onclick')
+    let id = document.querySelector('input[name=id]').value
+    let name = document.querySelector('input[name=name]').value
+    let surname = document.querySelector('input[name=surname]').value
+    let birthday = document.querySelector('input[name=age]').value
+    let avatar = document.querySelector('input[name=avatar]').value
+
+    console.log(id + ' ' + name + ' ' + surname + ' ' + birthday)
+
+    async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.parse('13', {
+          name: 'Sabrina',
+          surname: 'Raynor',
+          avatar:
+            'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1097.jpg',
+          birthday: '2022-01-25T03:29:03.866Z',
+        }), // body data type must match "Content-Type" header
+      })
+      return response.json() // parses JSON response into native JavaScript objects
+    }
+
+    postData(config1.apiUrl, {
+      id: id,
+      name: name,
+      surname: surname,
+      birthday: birthday,
+      avatar: avatar,
+    }).then((data) => {
+      console.log(data) // JSON data parsed by `data.json()` call
+    })
+  }
+
+  document.querySelector('.add-button').onclick = function (url) {
+    console.log('add-button.onclick')
+    fetch('https://mock-api.shpp.me/ccc/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'Sabrina',
+        surname: 'Raynor',
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1097.jpg',
+        birthday: '2022-01-25T03:29:03.866Z',
+      }),
+    }).then((data) => {
+      console.log(data)
+    })
+  }
 }
 
 DataTable(config1)
