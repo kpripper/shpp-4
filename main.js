@@ -90,7 +90,7 @@ const config1 = {
   columns: [
     { title: 'Имя', value: 'name' },
     { title: 'Фамилия', value: 'surname' },
-    { title: 'Возраст', value: 'age' },
+    { title: 'Возраст', value: 'birthday' },
     { title: 'Avatar', value: 'avatar' },
   ],
   apiUrl: 'https://mock-api.shpp.me/ccc/users',
@@ -101,7 +101,7 @@ const config2 = {
   columns: [
     { title: 'Name', value: 'name' },
     { title: 'Surname', value: 'surname' },
-    { title: 'Age', value: 'age' },
+    { title: 'Age', value: 'birthday' },
     { title: 'Avatar', value: 'avatar' },
   ],
   apiUrl: 'https://mock-api.shpp.me/ipigovych/users',
@@ -140,7 +140,7 @@ function addUser() {
 
   for (let i = 0; i < Object.entries(config1.columns).length; i++) {
     const td = document.createElement('td')
-    const inp = `<div class="input-container"><input class="input type="text" id="${config1.columns[i].value}" name="${config1.columns[i].value}" placeholder="${config1.columns[i].value}"></div>`
+    const inp = `<div class="input-container"><input class="input" type="text" id="${config1.columns[i].value}" name="${config1.columns[i].value}" placeholder="${config1.columns[i].value}"></div>`
     td.innerHTML = inp
     row.appendChild(td)
   }
@@ -162,7 +162,7 @@ function addUser() {
     let id = document.querySelector('input[name=id]').value
     let name = document.querySelector('input[name=name]').value
     let surname = document.querySelector('input[name=surname]').value
-    let birthday = document.querySelector('input[name=age]').value
+    let birthday = document.querySelector('input[name=birthday]').value
     let avatar = document.querySelector('input[name=avatar]').value
 
     console.log(id + ' ' + name + ' ' + surname + ' ' + birthday)
@@ -194,11 +194,41 @@ function addUser() {
 
   document.querySelector('.add-button').onclick = function (url) {
     console.log('add-button.onclick')
+
+    let id = document.querySelector('input[name=id]').value
+    let name = document.querySelector('input[name=name]').value
+    let surname = document.querySelector('input[name=surname]').value
+    let birthday = document.querySelector('input[name=birthday]').value
+    let avatar = document.querySelector('input[name=avatar]').value
+
+    if (id && name && surname && birthday && avatar) {
+      console.log('all ok' + id + ' ' + name + ' ' + surname + ' ' + birthday)
+    } else {
+      checkInput("id") 
+      for (let i = 0; i < Object.entries(config1.columns).length; i++) { 
+        console.log(config1.columns[i].value)
+        checkInput(config1.columns[i].value) 
+      }
+
+      //  if (id === '') {
+      //   document.querySelector('input[name=id]').classList.add("red-border")
+      // }
+      // if (name === '') {
+      //   document.querySelector('input[name=name]').classList.add("red-border")
+      // }
+      // if (surname === '') {
+      //   document.querySelector('input[name=surname]').classList.add("red-border")
+      // }
+      // if (birthday === '') {
+      //   document.querySelector('input[name=birthday]').classList.add("red-border")
+      // }
+      // if (avatar === '') {
+      //   document.querySelector('input[name=avatar]').classList.add("red-border")
+      // }
+    }
+
     fetch('https://mock-api.shpp.me/ccc/users', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         name: 'Sabrina',
         surname: 'Raynor',
@@ -210,6 +240,16 @@ function addUser() {
       console.log(data)
     })
   }
+
+  function checkInput(inp) {
+    console.log('check inp'+inp)
+    if (document.querySelector(`input[name=${inp}]`).value === '') {
+      document.querySelector(`input[name=${inp}]`).classList.add("red-border")
+    } else {
+      console.log('value '+document.querySelector(`input[name=${inp}]`).value)
+    }
+  }
+
 }
 
 DataTable(config1)
