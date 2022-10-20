@@ -157,6 +157,26 @@ function addUser() {
   }
 }
 
+/////////to top, to bottom buttons////////////
+
+const backToTopButton = document.querySelector('.to-top-button')
+const toBottomButton = document.querySelector('.to-bottom-button')
+
+const goToTop = () => {
+  document.body.scrollIntoView()
+  backToTopButton.style.display = 'none'
+  toBottomButton.style.display = 'block'
+}
+
+const  goToBottom = () => {
+  window.scrollTo(0, document.body.scrollHeight);
+  backToTopButton.style.display = 'block'
+  toBottomButton.style.display = 'none'
+}
+
+backToTopButton.addEventListener('click', goToTop)
+toBottomButton.addEventListener('click', goToBottom)
+
 ///////run script//////////////////////
 
 DataTable(config)
