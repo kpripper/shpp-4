@@ -59,7 +59,9 @@ function DataTable(config) {
         <td>${key['1'].name}</td>
         <td>${key['1'].surname}</td>
         <td>${getYearDiff(key['1'].birthday)}</td>
-        <td><img class="avatar" alt="avatar" src="${key['1'].avatar}"></img></td>
+        <td><img class="avatar" alt="avatar" src="${
+          key['1'].avatar
+        }"></img></td>
         <td><button class="button-delete" onclick ="deleteUser(${key['0']}, '${
           config.apiUrl
         }')">Delete</button></td>
@@ -74,18 +76,20 @@ function DataTable(config) {
     })
 }
 
-
 function deleteUser(id, url) {
   fetch(url + '/' + id, {
     method: 'DELETE',
-  }).then(() => {
-    DataTable(config)
   })
+    .then(() => {
+      DataTable(config)
+    })
+    .catch((error) => {
+      console.error('Error:', error)
+    })
 }
 
 function addUser() {
-
-///////////////add new row with inputs//////////////
+  ///////////////add new row with inputs//////////////
   const row = document.createElement('tr')
   const td = document.createElement('td')
 
@@ -114,14 +118,12 @@ function addUser() {
   ////////add user to API/////////////////////
 
   document.querySelector('.add-button').onclick = function (url) {
-
     let name = document.querySelector('input[name=name]').value
     let surname = document.querySelector('input[name=surname]').value
     let birthday = document.querySelector('input[name=birthday]').value
     let avatar = document.querySelector('input[name=avatar]').value
 
     if (name && surname && birthday && avatar) {
-      console.log('all ok' + name + ' ' + surname + ' ' + birthday)
       fetch(config.apiUrl, {
         method: 'POST',
         body: JSON.stringify({
@@ -130,10 +132,15 @@ function addUser() {
           avatar: avatar,
           birthday: birthday,
         }),
-      }).then((data) => {
-        console.log(data)
-        DataTable(config)
       })
+        .then((data) => {
+          alert('Added')
+          console.log(data)
+          DataTable(config)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
     } else {
       for (let i = 0; i < Object.entries(config1.columns).length; i++) {
         checkInput(config.columns[i].value)
@@ -142,7 +149,6 @@ function addUser() {
   }
 
   function checkInput(inp) {
-    console.log('check inp' + inp)
     if (document.querySelector(`input[name=${inp}]`).value === '') {
       document.querySelector(`input[name=${inp}]`).classList.add('red-border')
     } else {
