@@ -1,9 +1,31 @@
+const config1 = {
+  parent: '#usersTable',
+  columns: [
+    { title: 'Имя', value: 'name' },
+    { title: 'Фамилия', value: 'surname' },
+    { title: 'Возраст', value: 'birthday' },
+    { title: 'Avatar', value: 'avatar' },
+  ],
+  apiUrl: 'https://mock-api.shpp.me/ccc/users',
+}
+
+const config2 = {
+  parent: '#usersTable',
+  columns: [
+    { title: 'Name', value: 'name' },
+    { title: 'Surname', value: 'surname' },
+    { title: 'Age', value: 'birthday' },
+    { title: 'Avatar', value: 'avatar' },
+  ],
+  apiUrl: 'https://mock-api.shpp.me/ipigovych/users',
+}
+
 function DataTable(config) {
   console.log(config)
-  let configStringified = JSON.stringify(config)
-  console.log('configStringified' + configStringified)
-  let configParsed = JSON.parse(configStringified)
-  console.log(configParsed)
+ // let configStringified = JSON.stringify(config)
+//  console.log('configStringified' + configStringified)
+ // let configParsed = JSON.parse(configStringified)
+ // console.log(configParsed)
   fetch(config.apiUrl)
     .then((response) => {
       return response.json()
@@ -45,7 +67,7 @@ function DataTable(config) {
         <tr>
           <th colspan="${
             Object.keys(config.columns).length + 2
-          }"><button class="add-user" onclick ="addUser()">Add user</button></th>    
+          }"><button class="add-user" onclick ="addRowUser()">Add user</button></th>    
         </tr>      
         <tr>
           <th>№</th>
@@ -85,28 +107,6 @@ function DataTable(config) {
     })
 }
 
-const config1 = {
-  parent: '#usersTable',
-  columns: [
-    { title: 'Имя', value: 'name' },
-    { title: 'Фамилия', value: 'surname' },
-    { title: 'Возраст', value: 'birthday' },
-    { title: 'Avatar', value: 'avatar' },
-  ],
-  apiUrl: 'https://mock-api.shpp.me/ccc/users',
-}
-
-const config2 = {
-  parent: '#usersTable',
-  columns: [
-    { title: 'Name', value: 'name' },
-    { title: 'Surname', value: 'surname' },
-    { title: 'Age', value: 'birthday' },
-    { title: 'Avatar', value: 'avatar' },
-  ],
-  apiUrl: 'https://mock-api.shpp.me/ipigovych/users',
-}
-
 // function deleteUser(id, url) {
 //   fetch('https://mock-api.shpp.me/ccc/users/' + id, {
 //     method: 'DELETE',
@@ -126,7 +126,9 @@ function deleteUser(id, url) {
   })
 }
 
-function addUser() {
+///////////////add new row with inputs//////////////
+
+function addRowUser() {
   let table = document.getElementById('tableId')
 
   console.log(document.getElementById('tableId').childNodes[3].firstChild)
@@ -134,8 +136,8 @@ function addUser() {
 
   const row = document.createElement('tr')
   const td = document.createElement('td')
-  const inp = `<input type="text" id="id" name="id" placeholder="id">`
-  td.innerHTML = inp
+ // const inp = `<input type="text" id="id" name="id" placeholder="id will create automatically" >`
+  td.innerHTML = ""
   row.appendChild(td)
 
   for (let i = 0; i < Object.entries(config1.columns).length; i++) {
@@ -192,6 +194,8 @@ function addUser() {
     })
   }
 
+  ////////add user to API/////////////////////
+
   document.querySelector('.add-button').onclick = function (url) {
     console.log('add-button.onclick')
 
@@ -203,10 +207,22 @@ function addUser() {
 
     if (id && name && surname && birthday && avatar) {
       console.log('all ok' + id + ' ' + name + ' ' + surname + ' ' + birthday)
+      fetch('https://mock-api.shpp.me/ccc/users', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          avatar: avatar,
+          birthday: birthday,
+        }),
+      }).then((data) => {
+        console.log(data)
+        DataTable(config1)
+      })
     } else {
-      checkInput("id") 
+     // checkInput("id") 
       for (let i = 0; i < Object.entries(config1.columns).length; i++) { 
-        console.log(config1.columns[i].value)
+      // console.log(config1.columns[i].value)
         checkInput(config1.columns[i].value) 
       }
 
@@ -227,19 +243,9 @@ function addUser() {
       // }
     }
 
-    fetch('https://mock-api.shpp.me/ccc/users', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: 'Sabrina',
-        surname: 'Raynor',
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1097.jpg',
-        birthday: '2022-01-25T03:29:03.866Z',
-      }),
-    }).then((data) => {
-      console.log(data)
-    })
+
   }
+
 
   function checkInput(inp) {
     console.log('check inp'+inp)
@@ -251,5 +257,7 @@ function addUser() {
   }
 
 }
+
+///////run script//////////////////////
 
 DataTable(config1)
