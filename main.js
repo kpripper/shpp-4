@@ -59,7 +59,7 @@ function DataTable(config) {
         <td>${key['1'].name}</td>
         <td>${key['1'].surname}</td>
         <td>${getYearDiff(key['1'].birthday)}</td>
-        <td><img alt="avatar" src="${key['1'].avatar}"></img></td>
+        <td><img class="avatar" alt="avatar" src="${key['1'].avatar}"></img></td>
         <td><button class="button-delete" onclick ="deleteUser(${key['0']}, '${
           config.apiUrl
         }')">Delete</button></td>

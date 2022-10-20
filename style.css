@@ -43,3 +43,7 @@ input {
   border: 1px solid red;
 }
 
+img.avatar {
+  max-width: 100px;
+}
+
